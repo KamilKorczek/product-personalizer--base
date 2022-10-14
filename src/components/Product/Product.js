@@ -1,6 +1,6 @@
 import styles from './Product.module.scss';
 import propTypes from 'prop-types';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import ProductForm from '../ProductForm/ProductForm';
 import ProductImage from '../ProductImage/ProductImage';
 
@@ -8,9 +8,9 @@ const Product = props => {
   const [currentColor, setCurrentColor] = useState(props.colors[0]);
   const [currentSize, setCurrentSize] = useState(props.sizes[0].name);
 
-  const getPrice = price => {
-    return price + props.sizes.find(({ name }) => name === currentSize).additionalPrice + '$'
-  }
+  const getPrice = useMemo(() => {
+    return props.basePrice + props.sizes.find(({name}) => name === currentSize).additionalPrice + '$'
+  }, [props.sizes, props.basePrice, currentSize]);
 
   const handleSubmit = e => {
     e.preventDefault();
@@ -18,7 +18,7 @@ const Product = props => {
     console.log('Summary');
     console.log('===============');
     console.log('Name: ', props.title);
-    console.log('Price: ', getPrice(props.basePrice));
+    console.log('Price: ', getPrice);
     console.log('Size: ', currentSize);
     console.log('Color: ', currentColor);
   }
@@ -29,7 +29,7 @@ const Product = props => {
       <div>
         <header>
           <h2 className={styles.name}>{props.title}</h2>
-          <span className={styles.price}>{getPrice(props.basePrice)}</span>
+          <span className={styles.price}>{getPrice}</span>
         </header>
         <ProductForm 
         colors={props.colors}
