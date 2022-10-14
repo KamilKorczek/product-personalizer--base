@@ -1,0 +1,15 @@
+@use 'sass:math';
+@import '../../styles/settings.scss';
+
+.name {
+  margin: $base-size 0;
+  font-size: $base-size * 3;
+}
+
+.price {
+  font-size: $base-size * 1.5;
+}
+
+.optionLabel {
+  margin: $base-size 0;
+}
